@@ -15,6 +15,14 @@ Conveyor *Conveyor::getNext() {
     return next;
 }
 
+int Conveyor::getId() const {
+    return id;
+}
+
+void Conveyor::setId(int id) {
+    this->id = id;
+}
+
 void Output::transmit() {
     System::removeBag(bag->getId());
     bag = NULL;

@@ -9,7 +9,6 @@
 class Controller {
 
 public:
-    Controller() {}
 
     /**
      * egy csomópont ezt a függvényt hívja meg, ha továbbítania kell egy csomagot, ez dönti el melyik kimenetére kell tegye
@@ -17,12 +16,6 @@ public:
      * @param junction a függvényt meghívó csomópontra mutató pointer
      */
     Conveyor* manageBag(int bagId, Conveyor* junction);
-
-
-    /**
-     * destruktor
-     */
-    ~Controller() {}
 };
 
 

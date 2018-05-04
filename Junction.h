@@ -4,6 +4,7 @@
 #include "Conveyor.h"
 
 class Junction: public Conveyor {
+    int id;
     Conveyor** inputs;      ///a csomópontba beérkező futószalagok
     int numIns;
     Conveyor** outputs;      ///a csomópontból kiinduló futószalagok

@@ -3,11 +3,15 @@
 //statikus adattagok inicializalasa
 Controller System::contr;
 Junction** System::junctions;
-int System::numJuncts;
+int System::numJuncts = 0;
 Luggage** System::bags;
-int System::numBags;
+int System::numBags = 0;
 Output** System::outputs;
-int System::numOuts;
+int System::numOuts = 0;
+Input** System::inputs;
+int System::numIns = 0;
+Conveyor** System::conveyors;
+int System::numConvs = 0;
 
 void System::removeBag(int bagId) {
     delete bags[bagId];
@@ -28,7 +32,7 @@ void System::removeBag(int bagId) {
     --numBags;
 }
 
-void System::addJunction(Junction* junct) {
+int System::addJunction(Junction* junct) {
     Junction** tmpJunctions = new Junction*[numJuncts + 1];
 
     for(int i = 0; i < numJuncts; ++i) {
@@ -36,12 +40,16 @@ void System::addJunction(Junction* junct) {
     }
 
     tmpJunctions[numJuncts] = junct;
+    junct->setId(numJuncts);
+
     ++numJuncts;
     delete[] junctions;
     junctions = tmpJunctions;
+
+    return numJuncts - 1;
 }
 
-void System::addBag(Luggage *bag, int targetId) {
+int System::addBag(Luggage *bag, int targetId) {
     Luggage** tmpBags = new Luggage*[numBags + 1];
 
     for(int i = 0; i < numBags; ++i) {
@@ -51,10 +59,63 @@ void System::addBag(Luggage *bag, int targetId) {
     bag->setId(numBags);
     bag->setTarget(outputs[targetId]);
 
-    tmpBags[numJuncts] = bag;
+    tmpBags[numBags] = bag;
+    bag->setId(numBags);
+
     ++numBags;
     delete[] bags;
     bags = tmpBags;
+    return numBags - 1;
+}
+
+int System::addConveyor(Conveyor* conv) {
+    Conveyor** tmpConveyors = new Conveyor*[numConvs + 1];
+
+    for(int i = 0; i < numBags; ++i) {
+        tmpConveyors[i] = conveyors[i];
+    }
+
+    tmpConveyors[numConvs] = conv;
+    conv->setId(numConvs);
+
+    ++numConvs;
+    delete[] conveyors;
+    conveyors = tmpConveyors;
+    return numConvs - 1;
+}
+
+int System::addInput(Input *inp) {
+    Input** tmpInputs = new Input*[numIns + 1];
+
+    for(int i = 0; i < numIns; ++i) {
+        tmpInputs[i] = inputs[i];
+    }
+
+    tmpInputs[numIns] = inp;
+    inp->setId(numIns);
+
+    ++numIns;
+    delete[] inputs;
+    inputs = tmpInputs;
+
+    return numIns - 1;
+}
+
+int System::addOutput(Output *outp) {
+    Output** tmpOutputs = new Output*[numOuts + 1];
+
+    for(int i = 0; i < numOuts; ++i) {
+        tmpOutputs[i] = outputs[i];
+    }
+
+    tmpOutputs[numOuts] = outp;
+    outp->setId(numOuts);
+
+    ++numOuts;
+    delete[] outputs;
+    outputs = tmpOutputs;
+
+    return numOuts - 1;
 }
 
 System::~System() {
@@ -72,4 +133,14 @@ System::~System() {
         delete outputs[i];
 
     delete[] outputs;
+
+    for(int i = 0; i < numIns; ++i)
+        delete inputs[i];
+
+    delete[] inputs;
+
+    for(int i = 0; i < numConvs; ++i)
+        delete conveyors[i];
+
+    delete[] conveyors;
 }

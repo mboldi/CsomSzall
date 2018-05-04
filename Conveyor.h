@@ -18,6 +18,9 @@ public:
     Conveyor(int id = 0): id(id), next(NULL) {}
     Conveyor(int id, Conveyor* nextConv): id(id), next(nextConv) {}
 
+    int getId() const;
+
+    void setId(int id);
     /**
      * tovabbkuldi a csomagot
      */

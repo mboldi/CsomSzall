@@ -10,26 +10,38 @@ class System {
     static int numBags;
     static Output** outputs;
     static int numOuts;
+    static Input** inputs;
+    static int numIns;
+    static Conveyor** conveyors;
+    static int numConvs;
 
 public:
     static Controller contr;
 
-    System(){}
-
     /**
      * hozzaad egy elosztót a rendszerhez
-     * @param junct az elosztóra muttó pointer
+     * @param junct az elosztóra mutató pointer
      */
-    static void addJunction(Junction* junct);
+    static int addJunction(Junction* junct);
 
     /**
      * hozzaad egy csomagot a csomagokat tároló tömbhöz
      * @param bag
      */
-    static void addBag(Luggage* bag, int targetId);
+    static int addBag(Luggage* bag, int targetId);
 
     /**
-     * mikor kikerül egy csomag a rendszerből, ezzel a függvénnyel lehet törölni a tömbből és újra is rendezi a tömböt, valamir korrigálja ehhez a csomagok id-jét
+     * hozzaad egy szalagot a szalagokat tároló tömbhöz
+     * @param conveyorra mutató pointer
+     */
+    static int addConveyor(Conveyor* conv);
+
+    static int addInput(Input* inp);
+
+    static int addOutput(Output* outp);
+
+    /**
+     * mikor kikerül egy csomag a rendszerből, ezzel a függvénnyel lehet törölni a tömbből és újra is rendezi a tömböt, valamint korrigálja ehhez a csomagok id-jét
      * @param bagId a kitörölni kívánt csomag id-je
      */
     static void removeBag(int bagId);
