@@ -1,4 +1,6 @@
+#include <ostream>
 #include "System.h"
+#include "Conveyor.h"
 
 //statikus adattagok inicializalasa
 Controller System::contr;
@@ -163,4 +165,21 @@ Input *System::getInput(int id) {
 
 Output *System::getOutput(int id) {
     return outputs[id];
+}
+
+std::ostream& operator<<(std::ostream& os, System& sys) {
+    for(int i = 0; i < sys.getNumIns(); ++i)
+        os << *(sys.getInput(i)) << std::endl;
+
+    for(int i = 0; i < sys.getNumOuts(); ++i)
+        os << *(sys.getOutput(i)) << std::endl;
+
+    for(int i = 0; i < sys.getNumConvs(); ++i)
+        os << *(sys.getConveyor(i)) << std::endl;
+
+    for(int i = 0; i < sys.getNumJuncts(); ++i)
+        os << *(sys.getJunction(i)) << std::endl;
+
+    for(int i = 0; i < sys.getNumBags(); ++i)
+        os << *(sys.getBag(i)) << std::endl;
 }

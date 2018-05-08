@@ -36,3 +36,25 @@ Junction::~Junction() {
     delete[] inputs;
     delete[] outputs;
 }
+
+Conveyor *Junction::getInput(int id) {
+    return inputs[id];
+}
+
+Conveyor* Junction::getOutput(int id) {
+    return outputs[id];
+}
+
+std::ostream& operator<<(std::ostream& os, Junction & j) {
+    os << "Junction, id: " << j.getId() << " inputs ";
+
+    for (int i = 0; i < j.getNumIns(); ++i) {
+        os << "\t" << *j.getInput(i) << std::endl;
+    }
+
+    os << "outputs: ";
+
+    for (int k = 0; k < j.getNumOuts(); ++k) {
+        os << "\t" << *j.getOutput(k) << std::endl;
+    }
+}

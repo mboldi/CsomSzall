@@ -50,6 +50,12 @@ public:
 
     Output* getOutput(int id);
 
+    int getNumIns() { return numIns; }
+    int getNumOuts() { return numOuts; }
+    int getNumConvs() { return numConvs; }
+    int getNumJuncts() { return numJuncts; }
+    int getNumBags() { return numBags; }
+
     /**
      * mikor kikerül egy csomag a rendszerből, ezzel a függvénnyel lehet törölni a tömbből és újra is rendezi a tömböt, valamint korrigálja ehhez a csomagok id-jét
      * @param bagId a kitörölni kívánt csomag id-je
@@ -59,5 +65,6 @@ public:
     ~System();
 };
 
+std::ostream& operator<<(std::ostream& os, System& sys);
 
 #endif //CSOMSZALL_SYSTEM_H

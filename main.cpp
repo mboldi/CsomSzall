@@ -202,6 +202,7 @@ System* sysRead(std::istream& is){
                             conveyor->setNext(sys->getOutput(oId));
                             sys->getJunction(jId)->addOutput(conveyor);
                         }
+
                     }
                     break;
                 }
@@ -247,6 +248,8 @@ int main() {
     System* system;
 
     system = miniMenu();
+
+    std::cout << *system;
 
     return 0;
 }

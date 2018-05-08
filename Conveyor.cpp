@@ -1,3 +1,4 @@
+#include <ostream>
 #include "Conveyor.h"
 
 #include "System.h"
@@ -36,4 +37,8 @@ void Input::addBagToSys(int targetId) {
     bag = new Luggage;
 
     System::addBag(bag, targetId);
+}
+
+std::ostream& operator<<(std::ostream& os, Conveyor& c) {
+    os << "conveyor, id: " << c.getId() << " next id: " << c.getNext()->getId();
 }

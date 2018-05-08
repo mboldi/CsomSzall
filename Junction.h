@@ -19,11 +19,18 @@ public:
      */
     void addInput(Conveyor* newIn);
 
+    Conveyor* getInput(int id);
+
     /**
      * újy kimeneti futószalag hozzáadása a csomóponthoz
      * @param newOut az újonnan hozzáadandó futószalagra mutató pointer
      */
     void addOutput(Conveyor* newOut);
+
+    Conveyor* getOutput(int id);
+
+    int getNumIns() { return numIns; }
+    int getNumOuts() { return numOuts; }
 
     /**
      * ezen fuggvenyen belul kell elintezni a csomag tovbbkuldeset, itt kellene meghívni a Controller manageBag függvényét
@@ -32,6 +39,8 @@ public:
 
     ~Junction() ;
 };
+
+std::ostream& operator<<(std::ostream& os, Conveyor& c);
 
 
 #endif //CSOMSZALL_JUNCTION_H

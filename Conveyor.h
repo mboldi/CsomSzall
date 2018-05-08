@@ -66,5 +66,7 @@ public:
     void transmit();
 };
 
+std::ostream& operator<<(std::ostream& os, Conveyor& c);
+
 
 #endif //CSOMSZALL_CONVEYOR_H

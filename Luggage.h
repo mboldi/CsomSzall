@@ -5,6 +5,7 @@ class Conveyor;
 class Output;
 class Input;
 
+#include <ostream>
 #include "Conveyor.h"
 
 class Luggage {
@@ -36,6 +37,8 @@ public:
      */
     int getId();
 };
+
+std::ostream& operator<<(std::ostream& os, Luggage& l);
 
 
 #endif //CSOMSZALL_LUGGAGE_H
