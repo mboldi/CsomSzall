@@ -23,6 +23,10 @@ void Conveyor::setId(int id) {
     this->id = id;
 }
 
+void Conveyor::setNext(Conveyor *nextConv) {
+    this->next = nextConv;
+}
+
 void Output::transmit() {
     System::removeBag(bag->getId());
     bag = NULL;

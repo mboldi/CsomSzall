@@ -32,6 +32,8 @@ public:
      */
     void setBag(Luggage* bag);
 
+    void setNext(Conveyor* nextConv);
+
     /**
      * a kovetkezo rendszerelemre mutato pointert kerhetjuk le vele
      * @return a kovetkezo rendszerelemre mutato pointer

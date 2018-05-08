@@ -144,3 +144,23 @@ System::~System() {
 
     delete[] conveyors;
 }
+
+Junction *System::getJunction(int id) {
+    return junctions[id];
+}
+
+Luggage *System::getBag(int id) {
+    return bags[id];
+}
+
+Conveyor *System::getConveyor(int id) {
+    return conveyors[id];
+}
+
+Input *System::getInput(int id) {
+    return inputs[id];
+}
+
+Output *System::getOutput(int id) {
+    return outputs[id];
+}

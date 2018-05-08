@@ -24,11 +24,15 @@ public:
      */
     static int addJunction(Junction* junct);
 
+    Junction* getJunction(int id);
+
     /**
      * hozzaad egy csomagot a csomagokat tároló tömbhöz
      * @param bag
      */
     static int addBag(Luggage* bag, int targetId);
+
+    Luggage* getBag(int id);
 
     /**
      * hozzaad egy szalagot a szalagokat tároló tömbhöz
@@ -36,9 +40,15 @@ public:
      */
     static int addConveyor(Conveyor* conv);
 
+    Conveyor* getConveyor(int id);
+
     static int addInput(Input* inp);
 
+    Input* getInput(int id);
+
     static int addOutput(Output* outp);
+
+    Output* getOutput(int id);
 
     /**
      * mikor kikerül egy csomag a rendszerből, ezzel a függvénnyel lehet törölni a tömbből és újra is rendezi a tömböt, valamint korrigálja ehhez a csomagok id-jét
