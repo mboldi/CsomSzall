@@ -8,7 +8,8 @@
 #include "Luggage.h"
 #include "System.h"
 
-enum compType {junct, conv, bag, inp, outp, endconf};
+///komponenst típus lehetőségek
+enum compType {junct, conn, bag, inp, outp, endconf};
 
 /**
  * eltolja a sor tomb elemeit balra a megadott szammal
@@ -27,27 +28,27 @@ void pushLine(char* line, int amount){
  * @return a sor tipusa
  */
 compType whatType(char* line) {
-    if(strstr(line, "input") == 0){
+    if(strstr(line, "input") != 0){
         pushLine(line, 6);
         return inp;
     }
-    else if(strstr(line, "output") == 0) {
+    else if(strstr(line, "output") != 0) {
         pushLine(line, 7);
         return outp;
     }
-    else if(strstr(line, "luggage") == 0) {
+    else if(strstr(line, "luggage") != 0) {
         pushLine(line, 8);
         return bag;
     }
-    else if(strstr(line, "conveyor") == 0) {
+    else if(strstr(line, "conveyor") != 0) {
         pushLine(line, 9);
-        return conv;
+        return conn;
     }
-    else if(strstr(line, "junction") == 0) {
+    else if(strstr(line, "junction") != 0) {
         pushLine(line, 9);
         return junct;
     }
-    else if(strstr(line, "endconfig") == 0) {
+    else if(strstr(line, "endconfig") != 0) {
         return endconf;
     }
     else{
@@ -55,50 +56,129 @@ compType whatType(char* line) {
     }
 }
 
+std::ostream& operator<<(std::ostream& os, compType c) {
+    switch (c) {
+        case inp:
+            os << "input";
+            break;
+        case outp:
+            os << "output";
+            break;
+        case bag:
+            os << "bag";
+            break;
+        case conn:
+            os << "connect";
+            break;
+        case junct:
+            os << "junction";
+            break;
+        case endconf:
+            os << "endconfig";
+            break;
+    }
+
+    return os;
+}
+
+compType readType(std::istream& is) {
+    char actLine[200];
+    compType actType;
+
+    bool success = false;
+
+    while(!success){
+        try {
+            is.getline(actLine, 200);
+            actType = whatType(actLine);
+            success = true;
+        }
+        catch (std::exception& e) {
+            success = false;
+            std::cout << e.what() << std::endl;
+            std::cout << "Kerem adja meg ujra, vagy ha nincs tobb, irja be: endconfig" << std::endl;
+        }
+    }
+
+
+    return actType;
+}
+
 /**
  * beolvassa a rendszert a megadott forrasbol
  * @param is a rendszert leiro szoveg forrasa
  */
-bool sysRead(std::istream& is){
-    char* actLine = new char[200];
+System* sysRead(std::istream& is){
     compType actType;
 
-    is.getline(actLine, 200);
-    actType = whatType(actLine);
+    System* sys = new System;
+
+    std::cout << "Adja meg a komponenseket!" << std::endl;
+
+    actType = readType(is);
+
     while(actType != endconf){
+        std::cerr << "while elejen actType: " << actType << std::endl;
+
         switch (actType){
-            case inp:
+            case inp: {
+                std::cerr << "inp" << std::endl;
+
                 Input* tmpInp = new Input;
-                std::cout << System::addInput(tmpInp) << std::endl;
-                break;
-            case outp:
+                std::cout << "Eszlelt tipus: " << actType << " id: " << sys->addInput(tmpInp) << std::endl;
+            }
+            break;
+            case outp: {
                 Output* tmpOutp = new Output;
-                std::cout << System::addOutput(tmpOutp) << std::endl;
-                break;
+                std::cout << "Eszlelt tipus: " << actType  << " id: " << sys->addOutput(tmpOutp) << std::endl;
+            }
+            break;
+            case junct: {
+                Junction* tmpJunct = new Junction;
+                std::cout << "Eszlelt tipus: " << actType  << " id: " << actType << sys->addJunction(tmpJunct) << std::endl;
+            }
+            break;
             default:
-                std::cout << "Kredenc" << std::endl;
+                std::cerr << "Kredenc" << std::endl;
         }
 
-        is.getline(actLine, 200);
-        actType = whatType(actLine);
+        actType = readType(is);
     }
 
-    whatType(actLine);
+    return sys;
+}
 
-    delete[] actLine;
+System* miniMenu() {
+    std::cout << "Honnan akarja megnyitni a konfiguraciot: fajlbol, vagy a console ablakbol? (f/c) ";
+
+    char response;
+    std::cin >> response;
+
+    response = tolower(response);
+
+    switch (response){
+        case 'c':
+            return sysRead(std::cin);
+        case 'f': {
+            std::cout << "Adja meg a fajlnevet!";
+
+            char Fname[100];
+            std::cin >> Fname;
+
+            std::ifstream fileS(Fname);
+
+            return sysRead(fileS);
+        }
+        default:
+            std::cout << "Nincs ilyen lehetoseg, kilepek :( " << std::endl;
+            return NULL;
+    }
 }
 
 int main() {
-    /*std::fstream fileS;
-    fileS.open("asd.txt");*/
+    System* system;
 
-    /*char* alma =  new char[100];
+    system = miniMenu();
 
-    std::cin.getline(alma, 100);
-    std::cout << alma << std::endl;
-
-    delete[] alma;*/
-
-    sysRead(std::cin);
     return 0;
 }
