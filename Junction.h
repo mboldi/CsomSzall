@@ -4,14 +4,13 @@
 #include "Conveyor.h"
 
 class Junction: public Conveyor {
-    int id;
-    Conveyor** inputs;      ///a csomópontba beérkező futószalagok
-    int numIns;
     Conveyor** outputs;      ///a csomópontból kiinduló futószalagok
     int numOuts;
 
 public:
-    Junction(): inputs(NULL), outputs(NULL) {}
+    Junction(): outputs(NULL), numOuts(0) {}
+
+    compType getType() const { return junct; }
 
     /**
      * új bemeneti futószalag hosszáadása a csomóponthoz
@@ -29,7 +28,6 @@ public:
 
     Conveyor* getOutput(int id);
 
-    int getNumIns() { return numIns; }
     int getNumOuts() { return numOuts; }
 
     /**
@@ -37,10 +35,9 @@ public:
      */
     void bagManage();
 
+    void write(std::ostream& os);
+
     ~Junction() ;
 };
-
-std::ostream& operator<<(std::ostream& os, Conveyor& c);
-
 
 #endif //CSOMSZALL_JUNCTION_H

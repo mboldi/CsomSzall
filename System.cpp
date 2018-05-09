@@ -1,6 +1,7 @@
 #include <ostream>
 #include "System.h"
 #include "Conveyor.h"
+#include "Junction.h"
 
 //statikus adattagok inicializalasa
 Controller System::contr;
@@ -14,6 +15,29 @@ Input** System::inputs;
 int System::numIns = 0;
 Conveyor** System::conveyors;
 int System::numConvs = 0;
+
+int System::addBag(Luggage *bag, int targetId) {
+    Luggage** tmpBags = new Luggage*[numBags + 1];
+
+    for(int i = 0; i < numBags; ++i) {
+        tmpBags[i] = bags[i];
+    }
+
+    bag->setId(numBags);
+    bag->setTarget(outputs[targetId]);
+
+    tmpBags[numBags] = bag;
+    bag->setId(numBags);
+
+    ++numBags;
+    delete[] bags;
+    bags = tmpBags;
+    return numBags - 1;
+}
+
+Luggage *System::getBag(int id) {
+    return bags[id];
+}
 
 void System::removeBag(int bagId) {
     delete bags[bagId];
@@ -51,23 +75,8 @@ int System::addJunction(Junction* junct) {
     return numJuncts - 1;
 }
 
-int System::addBag(Luggage *bag, int targetId) {
-    Luggage** tmpBags = new Luggage*[numBags + 1];
-
-    for(int i = 0; i < numBags; ++i) {
-        tmpBags[i] = bags[i];
-    }
-
-    bag->setId(numBags);
-    bag->setTarget(outputs[targetId]);
-
-    tmpBags[numBags] = bag;
-    bag->setId(numBags);
-
-    ++numBags;
-    delete[] bags;
-    bags = tmpBags;
-    return numBags - 1;
+Junction *System::getJunction(int id) {
+    return junctions[id];
 }
 
 int System::addConveyor(Conveyor* conv) {
@@ -84,6 +93,10 @@ int System::addConveyor(Conveyor* conv) {
     delete[] conveyors;
     conveyors = tmpConveyors;
     return numConvs - 1;
+}
+
+Conveyor *System::getConveyor(int id) {
+    return conveyors[id];
 }
 
 int System::addInput(Input *inp) {
@@ -103,6 +116,10 @@ int System::addInput(Input *inp) {
     return numIns - 1;
 }
 
+Input *System::getInput(int id) {
+    return inputs[id];
+}
+
 int System::addOutput(Output *outp) {
     Output** tmpOutputs = new Output*[numOuts + 1];
 
@@ -118,6 +135,42 @@ int System::addOutput(Output *outp) {
     outputs = tmpOutputs;
 
     return numOuts - 1;
+}
+
+Output *System::getOutput(int id) {
+    return outputs[id];
+}
+
+void System::list(std::ostream& os) {
+    os << "rendszer: " << std::endl;
+
+    int insNum = numIns;
+    for(int i = 0; i < insNum; ++i) {
+        inputs[i]->write(os);
+        os << std::endl;
+    }
+
+    int outsNum = numOuts;
+    for(int i = 0; i < outsNum; ++i) {
+        outputs[i]->write(os);
+        os << std::endl;
+    }
+
+    int junctsNum = numJuncts;
+    for(int i = 0; i < junctsNum; ++i) {
+        junctions[i]->write(os);
+        os << std::endl;
+    }
+
+    int convsNum = numConvs;
+    for(int i = 0; i < convsNum; ++i) {
+        Conveyor actConv = *this->conveyors[i];
+        actConv.write(os);
+        os << std::endl;
+    }
+
+    for(int i = 0; i < numBags; ++i)
+        os << bags[i]->getId() << std::endl;
 }
 
 System::~System() {
@@ -145,41 +198,4 @@ System::~System() {
         delete conveyors[i];
 
     delete[] conveyors;
-}
-
-Junction *System::getJunction(int id) {
-    return junctions[id];
-}
-
-Luggage *System::getBag(int id) {
-    return bags[id];
-}
-
-Conveyor *System::getConveyor(int id) {
-    return conveyors[id];
-}
-
-Input *System::getInput(int id) {
-    return inputs[id];
-}
-
-Output *System::getOutput(int id) {
-    return outputs[id];
-}
-
-std::ostream& operator<<(std::ostream& os, System& sys) {
-    for(int i = 0; i < sys.getNumIns(); ++i)
-        os << *(sys.getInput(i)) << std::endl;
-
-    for(int i = 0; i < sys.getNumOuts(); ++i)
-        os << *(sys.getOutput(i)) << std::endl;
-
-    for(int i = 0; i < sys.getNumConvs(); ++i)
-        os << *(sys.getConveyor(i)) << std::endl;
-
-    for(int i = 0; i < sys.getNumJuncts(); ++i)
-        os << *(sys.getJunction(i)) << std::endl;
-
-    for(int i = 0; i < sys.getNumBags(); ++i)
-        os << *(sys.getBag(i)) << std::endl;
 }

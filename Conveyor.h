@@ -5,6 +5,7 @@ class Luggage;
 
 #include <cstdio>
 #include "Luggage.h"
+#include "types.h"
 
 class Conveyor {
     /// a szállítószalag id-je
@@ -15,12 +16,16 @@ protected:
     /// az éppen a szalagon lévő csomagra mutató pointer
     Luggage* bag;
 public:
-    Conveyor(int id = 0): id(id), next(NULL) {}
-    Conveyor(int id, Conveyor* nextConv): id(id), next(nextConv) {}
+    Conveyor(int id = 0): id(id), next(NULL), bag(NULL) {}
+    //Conveyor(int id, Conveyor* nextConv): id(id), next(nextConv) {}
+    Conveyor(Conveyor& c): id(c.getId()), next(c.getNext()) {}
+
+    virtual compType getType() const { return conv; }
 
     int getId() const;
 
     void setId(int id);
+
     /**
      * tovabbkuldi a csomagot
      */
@@ -40,6 +45,7 @@ public:
      */
     Conveyor* getNext();
 
+    virtual void write(std::ostream& os);
 
     /**
      * ezt a függvényt meg kell hívni, ha átadunk a futószalagnak egy csomagot
@@ -53,6 +59,8 @@ class Input: public Conveyor {
 public:
     Input(int id = 0): Conveyor(id) {}
 
+    compType getType() const { return inp; }
+
     /**
      * egy táska látrehozására használt függvény
      * @param targetId a táska célpontjának id-je
@@ -63,10 +71,10 @@ public:
 
 class Output: public Conveyor {
 public:
+    compType getType() const { return outp; }
+
     void transmit();
 };
-
-std::ostream& operator<<(std::ostream& os, Conveyor& c);
 
 
 #endif //CSOMSZALL_CONVEYOR_H

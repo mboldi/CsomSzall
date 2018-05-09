@@ -28,6 +28,14 @@ void Conveyor::setNext(Conveyor *nextConv) {
     this->next = nextConv;
 }
 
+void Conveyor::write(std::ostream &os) {
+    os << this->getType() << ", id: " << this->id << " next " ;
+    if(this->next == NULL)
+        os << "nincs";
+    else
+        os << "id: " << this->next->getId();
+}
+
 void Output::transmit() {
     System::removeBag(bag->getId());
     bag = NULL;
@@ -37,8 +45,4 @@ void Input::addBagToSys(int targetId) {
     bag = new Luggage;
 
     System::addBag(bag, targetId);
-}
-
-std::ostream& operator<<(std::ostream& os, Conveyor& c) {
-    os << "conveyor, id: " << c.getId() << " next id: " << c.getNext()->getId();
 }
