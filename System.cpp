@@ -82,7 +82,7 @@ Junction *System::getJunction(int id) {
 int System::addConveyor(Conveyor* conv) {
     Conveyor** tmpConveyors = new Conveyor*[numConvs + 1];
 
-    for(int i = 0; i < numBags; ++i) {
+    for(int i = 0; i < numConvs; ++i) {
         tmpConveyors[i] = conveyors[i];
     }
 

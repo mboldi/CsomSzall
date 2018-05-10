@@ -33,6 +33,6 @@ void Junction::write(std::ostream &os) {
 
     int numOuts = this->numOuts;
     for (int k = 0; k < numOuts; ++k) {
-        os << "\t\t" << this->getType() << " id: " << this->outputs[k]->getId() << std::endl;
+        os << "\t\t" << this->outputs[k]->getType() << " id: " << this->outputs[k]->getId() << std::endl;
     }
 }

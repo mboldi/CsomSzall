@@ -89,10 +89,10 @@ System* sysRead(std::istream& is){
                         System::addConveyor(conveyor);                 //conveyor hozzadasa a rendszerhez
                         sys->getInput(iId)->setNext(conveyor);      //input next-jenek beallitasa
                         conveyor->setNext(sys->getJunction(jId));      //conveyor next-jenek beallitasa
-
+/*
                         std::cerr << "most letrehozott conv: ";
                         conveyor->write(std::cerr);
-                        std::cerr <<std::endl;
+                        std::cerr << "juntcion next: " << sys->getJunction(jId)->getNext()->getType() << std::endl;*/
 
                         lineStream.str("\0");
                     }
@@ -117,10 +117,6 @@ System* sysRead(std::istream& is){
                             sys->getJunction(j1Id)->addOutput(conveyor);
                             conveyor->setNext(sys->getJunction(j2Id));
 
-                            std::cerr << "most letrehozott conv: ";
-                            conveyor->write(std::cerr);
-                            std::cerr <<std::endl;
-
                             lineStream.str("\0");
                         }
                         else if(actLine[1] == 'o') {
@@ -140,10 +136,6 @@ System* sysRead(std::istream& is){
                             conveyor->setNext(sys->getOutput(oId));
                             sys->getJunction(jId)->addOutput(conveyor);
 
-                            std::cerr << "most letrehozott conv: ";
-                            conveyor->write(std::cerr);
-                            std::cerr <<std::endl;
-
                             lineStream.str("\0");
                         }
 
@@ -152,7 +144,7 @@ System* sysRead(std::istream& is){
                 }
             }
             default:
-                std::cerr << "Nem hasznalhato bemenet" << std::endl;
+                std::cerr << "Nem felismerheto lehetoseg" << std::endl;
         }
 
         actType = readType(is, actLine);
