@@ -34,8 +34,9 @@ compType readType(std::istream& is, char*& actLine) {
 }
 
 /**
- * beolvassa a rendszert a megadott forrasbol
- * @param is a rendszert leiro szoveg forrasa
+ * beolvassa a rendszert a megadott forrásbol
+ * @param is a rendszert leiró szöveg forrása
+ * @return a felépitett rendszerre mutató pointer
  */
 System* sysRead(std::istream& is){
     compType actType;
@@ -153,6 +154,10 @@ System* sysRead(std::istream& is){
     return sys;
 }
 
+/**
+ * egy kis menü a betöltés elejen, amivel kiválaszthatjuk, honnan akarjuk betölteni a rendszert és be is tölti onnan a sysRead függvény segítségével
+ * @return
+ */
 System* miniMenu() {
     std::cout << "Honnan akarja megnyitni a konfiguraciot: fajlbol, vagy a console ablakbol? (f/c) ";
 

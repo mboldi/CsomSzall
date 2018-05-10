@@ -33,7 +33,7 @@ void Conveyor::write(std::ostream &os) {
     if(this->next == NULL)
         os << "nincs";
     else
-        os << "id: " << this->next->getId();
+        os << "type: " << this->next->getType() << ", id: " << this->next->getId();
 }
 
 void Output::transmit() {
