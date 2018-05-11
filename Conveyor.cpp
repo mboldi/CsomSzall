@@ -1,11 +1,15 @@
 #include <ostream>
+#include <iostream>
 #include "Conveyor.h"
 
 #include "System.h"
 
 void Conveyor::transmit() {
+    if(next == NULL)
+        throw std::runtime_error("nincs csatlakoztatva kovetkezo rendszerelem");
     next->bag = bag;
     bag = NULL;
+    next->transmit();
 }
 
 void Conveyor::setBag(Luggage *bag) {
@@ -37,6 +41,8 @@ void Conveyor::write(std::ostream &os) {
 }
 
 void Output::transmit() {
+    std::cout << bag->getId() << " idvel rendelkezo csomag elerte celjat." << std::endl;
+
     System::removeBag(bag->getId());
     bag = NULL;
 }

@@ -15,7 +15,7 @@ public:
      * @param bagId annak a csomagnak az id-je, amit tovabitani kellene
      * @param junction a függvényt meghívó csomópontra mutató pointer
      */
-    Conveyor* manageBag(int bagId, Conveyor* junction);
+    Conveyor* manageBag(Luggage* bag, Junction *junctio);
 };
 
 

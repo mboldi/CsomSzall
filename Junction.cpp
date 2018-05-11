@@ -1,8 +1,10 @@
 #include "Junction.h"
 #include "System.h"
 
-void Junction::bagManage() {
-    next = System::contr.manageBag(bag->getId(), this);
+void Junction::transmit() {
+    next = System::contr.manageBag(bag, this); //beallitja a kovetkezo pointert arra, amerre a csomagnak menni kell
+
+    Conveyor::transmit();
 }
 
 void Junction::addOutput(Conveyor *newOut) {

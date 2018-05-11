@@ -9,16 +9,14 @@ class Junction: public Conveyor {
 
 public:
     Junction(): outputs(NULL), numOuts(0) {}
+    Junction(Junction& j): numOuts(j.getNumOuts()) {
+        outputs = new Conveyor*[numOuts];
+        for(int i = 0; i < numOuts; i++) {
+            outputs[i] = j.getOutput(i);
+        }
+    }
 
     compType getType() const { return junct; }
-
-    /**
-     * új bemeneti futószalag hosszáadása a csomóponthoz
-     * @param newIn az újonnan hozzáadandó futószalagra mutató pointer
-     */
-    void addInput(Conveyor* newIn);
-
-    Conveyor* getInput(int id);
 
     /**
      * újy kimeneti futószalag hozzáadása a csomóponthoz
@@ -30,12 +28,9 @@ public:
 
     int getNumOuts() { return numOuts; }
 
-    /**
-     * ezen fuggvenyen belul kell elintezni a csomag tovbbkuldeset, itt kellene meghívni a Controller manageBag függvényét
-     */
-    void bagManage();
-
     void write(std::ostream& os);
+
+    void transmit();
 
     ~Junction() ;
 };

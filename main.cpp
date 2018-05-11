@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "memtrace.h"
+
 #include "Controller.h"
 #include "Conveyor.h"
 #include "Junction.h"
@@ -10,9 +12,9 @@
 #include "System.h"
 
 
-compType readType(std::istream& is, char*& actLine) {
-    actLine = new char[200];
+compType readType(std::istream& is, char* actLine) {
     compType actType;
+
 
     bool success = false;
 
@@ -29,7 +31,6 @@ compType readType(std::istream& is, char*& actLine) {
         }
     }
 
-
     return actType;
 }
 
@@ -41,7 +42,7 @@ compType readType(std::istream& is, char*& actLine) {
 System* sysRead(std::istream& is){
     compType actType;
 
-    char* actLine;
+    char* actLine = new char[16];
 
     System* sys = new System;
 
@@ -90,12 +91,14 @@ System* sysRead(std::istream& is){
                         System::addConveyor(conveyor);                 //conveyor hozzadasa a rendszerhez
                         sys->getInput(iId)->setNext(conveyor);      //input next-jenek beallitasa
                         conveyor->setNext(sys->getJunction(jId));      //conveyor next-jenek beallitasa
+
+
 /*
                         std::cerr << "most letrehozott conv: ";
                         conveyor->write(std::cerr);
                         std::cerr << "juntcion next: " << sys->getJunction(jId)->getNext()->getType() << std::endl;*/
 
-                        lineStream.str("\0");
+                        //lineStream.str("");
                     }
                     break;
                     case 'j': {
@@ -118,7 +121,7 @@ System* sysRead(std::istream& is){
                             sys->getJunction(j1Id)->addOutput(conveyor);
                             conveyor->setNext(sys->getJunction(j2Id));
 
-                            lineStream.str("\0");
+                            //lineStream.str("");
                         }
                         else if(actLine[1] == 'o') {
                             pushLine(actLine, 2);
@@ -137,7 +140,7 @@ System* sysRead(std::istream& is){
                             conveyor->setNext(sys->getOutput(oId));
                             sys->getJunction(jId)->addOutput(conveyor);
 
-                            lineStream.str("\0");
+                            //lineStream.str("");
                         }
 
                     }
@@ -151,12 +154,14 @@ System* sysRead(std::istream& is){
         actType = readType(is, actLine);
     }
 
+    delete[] actLine;
+
     return sys;
 }
 
 /**
  * egy kis menü a betöltés elejen, amivel kiválaszthatjuk, honnan akarjuk betölteni a rendszert és be is tölti onnan a sysRead függvény segítségével
- * @return
+ * @return a rendszerre mutató pointer
  */
 System* miniMenu() {
     std::cout << "Honnan akarja megnyitni a konfiguraciot: fajlbol, vagy a console ablakbol? (f/c) ";
@@ -190,13 +195,72 @@ System* miniMenu() {
     }
 }
 
+bool bagAdder(System& sys, std::istream& is, std::ostream& os) {
+    int inId = -1, outId = -1;
+/*
+    if(is.rdbuf()->in_avail()) {
+    }
+    else {
+        throw std::invalid_argument("Rossz input");
+    }*/
+
+    char text[4];
+
+    is >> text;
+
+    text[4] = '\0';
+
+    if(strcmp(text, "bag") == 0) {
+        is >> inId >> outId;
+
+        os << "inId: " << inId << " outId: " << outId << std::endl;
+
+        if(inId == -1 || outId == -1 || inId >= sys.getNumIns() || outId >= sys.getNumOuts()){
+            throw std::invalid_argument("Rossz id");
+        }
+        else {
+            Luggage* tmpBag = new Luggage;
+
+            sys.addBag(tmpBag, outId);
+            sys.getInput(inId)->setBag(tmpBag);
+            sys.getInput(inId)->transmit();
+        }
+    }
+    else if(strcmp(text, "end") == 0) {
+        return true;
+    }
+    else {
+        throw std::invalid_argument("Nem tudom ertelmezni");
+    }
+
+    return false;
+}
+
 int main() {
     System* system;
 
     system = miniMenu();
 
-    if(system != NULL)
+    if(system != NULL){
         system->list(std::cout);
+
+        std::cout << "\nA csomagokat a kovetkezo formatumban varom:\n\t\"bag\" *bemenet id-je(ahol bekerul a rendszerbe a csomag)* *kimenet id-je(ahova el kell jusson a csomag)*\nMiutan megadta a csomagot, vegigkovetheti annak utjat a rendszeren\nHa nem akar tobbet beadni, akkor irja be: end"
+                  << std::endl;
+
+        bool end = false;
+
+        while(!end) {
+            try {
+                end = bagAdder(*system, std::cin, std::cout);
+            }
+            catch (std::exception& e) {
+                std::cerr << "Hiba a csomag beolvasa kozben: " << e.what() << std::endl;
+            }
+
+        }
+    }
+
+    delete system;
 
     return 0;
 }

@@ -4,6 +4,7 @@
 #include "Controller.h"
 
 class System {
+    //tarolokhoz lehetne irni egy dintombot :/
     static Junction** junctions;
     static int numJuncts;
     static Luggage** bags;
@@ -57,6 +58,9 @@ public:
     static void removeBag(int bagId);
 
     void list(std::ostream& os);
+
+    int getNumIns() { return numIns; }
+    int getNumOuts() { return numOuts; }
 
     ~System();
 };

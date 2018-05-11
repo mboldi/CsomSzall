@@ -3,6 +3,7 @@
 #include "Conveyor.h"
 #include "Junction.h"
 
+
 //statikus adattagok inicializalasa
 Controller System::contr;
 Junction** System::junctions;
