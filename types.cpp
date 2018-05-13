@@ -4,30 +4,37 @@
 #include "types.h"
 
 void pushLine(char* line, int amount){
-    for(int i = 0; i <= strlen(line); i++){
-        line[i] = line[i + amount];
+    int len = strlen(line);
+
+    char tmpLine[len + 1];
+    strcpy(tmpLine, line);
+    tmpLine[strlen(line)] = '\0';
+
+    for(unsigned int i = 0; i <= strlen(line); i++){
+
+        line[i] = tmpLine[i + amount];
     }
 }
 
 compType whatType(char* line) {
     if(strstr(line, "input") != 0){
-        pushLine(line, 6);
+        //pushLine(line, 5);
         return inp;
     }
     else if(strstr(line, "output") != 0) {
-        pushLine(line, 7);
+        //pushLine(line, 6);
         return outp;
     }
     else if(strstr(line, "luggage") != 0) {
-        pushLine(line, 8);
+        //pushLine(line, 7);
         return bag;
     }
     else if(strstr(line, "connect") != 0) {
-        pushLine(line, 8);
+        pushLine(line, 7);
         return conn;
     }
     else if(strstr(line, "junction") != 0) {
-        pushLine(line, 9);
+        //pushLine(line, 8);
         return junct;
     }
     else if(strstr(line, "endconfig") != 0) {

@@ -17,5 +17,5 @@ void Luggage::setTarget(Output *out) {
 }
 
 std::ostream &operator<<(std::ostream &os, Luggage &l)  {
-    os << "Luggage id: " << l.getId() << " target id: " << l.getTarget()->getId();
+    return os << "Luggage id: " << l.getId() << " target id: " << l.getTarget()->getId();
 }

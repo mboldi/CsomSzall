@@ -7,19 +7,25 @@
 enum compType {junct, conn, bag, inp, outp, conv, endconf};
 
 /**
- * eltolja a sor tomb elemeit balra a megadott szammal
- * @param line a sorra mutato pointer
- * @param amount ennyivel fogja eltolni balra a sort
+ * eltol balra a megadott mennyiséggel egy char tömböt
+ * @param line a char tömbre mutató pointer
+ * @param amount ennyivel fogja eltolni a char tömböt
  */
 void pushLine(char* line, int amount);
 
 /**
- * visszater a tipussal amilyen a belvasott sor, es ki is torli az elejerol a tipusmegjelolest, ha nem talal tpiust, akkor std::invalid_parameter exceptiont dob
- * @param line a sorra mutato pointer
- * @return a sor tipusa
+ * megmondja, hogy a megadott char tömbben melyik komponens típus található meg
+ * @param line a char tömbre mutató pointer
+ * @return a fellelhető komponens típus
  */
 compType whatType(char* line);
 
+/**
+ * inserter operator overload, hogy ki lehessen írni compType típusú változót
+ * @param os a használni kívánt std::ostream
+ * @param c a kiírni kívánt változó
+ * @return a használt std::ostream
+ */
 std::ostream& operator<<(std::ostream& os, compType c);
 
 #endif //CSOMSZALL_TYPES_HPP
